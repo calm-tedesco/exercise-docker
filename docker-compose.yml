@@ -1,0 +1,31 @@
+services:
+  python:
+    build:
+      dockerfile: Dockerfile
+      context: .
+    container_name: exercise_python
+    depends_on:
+      - py-mongo
+    ports:
+      - 4001:4001
+    networks:
+      exercise:
+        ipv4_address: 192.168.55.3
+  py-mongo:
+    build:
+      context: ./database
+    container_name: mongodb
+    volumes:
+      - ./database/mongo-data:/data/db
+    ports:
+      - 27017:27017
+      - 4002:4002
+    networks:
+      exercise:
+        ipv4_address: 192.168.55.2
+networks:
+  exercise:
+    ipam:
+      config:
+        - subnet: 192.168.55.0/24
+          gateway: 192.168.55.1

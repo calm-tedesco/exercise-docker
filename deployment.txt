@@ -1,0 +1,32 @@
+- install necessary packages:
+apt install docker.io nmap firewalld python3 python3-pip
+
+#docker-compose
+sudo curl -L "https://github.com/docker/compose/releases/download/1.27.4/docker-compose-$(uname -s)-$(uname -m)" -o /usr/bin/docker-compose
+sudo chmod +x /usr/bin/docker-compose
+
+- clone git repository:
+git clone https://github.com/calm-tedesco/exercise-docker
+
+- run docker-compose:
+docker-compose up -d
+
+Done! It should be up and running already.
+
+There are two servers: exercise_python and mongodb
+exercise_python is listening for requests on port 4001 (/concat-and-send):
+http://localhost:4001/concat-and-send?name=<name>
+
+mongodb is listening for requests on port 4002 (/save-in-db):
+http://localhost:4002/save-in-db?name=<name>&new_name=<name_concatenated>
+
+We can execute the following commands to see that the setup works:
+
+curl -v "http://localhost:4001/concat-and-send?name=mew"
+docker exec -it mongodb mongosh
+show dbs                        -------> 'pokemon' database has been added
+use dbs
+show collections                -------> 'names' collection exists
+db.names.find().pretty()
+
+'mew' and 'mewtwo' have been added to the 'pokemon' database!
